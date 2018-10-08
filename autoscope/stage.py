@@ -3,11 +3,9 @@ import time
 from .utils import log
 
 try:
-    # only works on RPi
-    import RPi.GPIO as GPIO
+    import RPi.GPIO as GPIO  # Only works on RPi
 except ImportError:
-    # import fake GPIO module
-    log.warning()
+    log.warning("RPi.GPIO not found! Using GPIO test module.")
     from .gpio import GPIO
 
 class Stage:
