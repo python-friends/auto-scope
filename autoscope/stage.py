@@ -1,8 +1,12 @@
 import sys
 import time
 
-# TODO: try to import, except: import test module.
-import RPi.GPIO as GPIO
+try:
+    # only works on RPi
+    import RPi.GPIO as GPIO
+except ImportError:
+    # import fake GPIO module
+    from .gpio import GPIO
 
 class Stage:
     def __init__(self, xpins, ypins):
