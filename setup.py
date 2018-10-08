@@ -1,7 +1,6 @@
 from setuptools import setup, find_packages
 
 setup(
-    # Needed to silence warnings (and to be a worthwhile package)
     name='auto-scope',
     url='https://github.com/python-friends/auto-scope',
     author='Wytamma Wirth & Eike Steinig',

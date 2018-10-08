@@ -1,0 +1,1 @@
+from autoscope.stage import stitch

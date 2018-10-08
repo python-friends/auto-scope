@@ -1,1 +1,1 @@
-from stage import Stage
+from .stage import Stage
