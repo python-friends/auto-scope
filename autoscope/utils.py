@@ -15,6 +15,8 @@ def _set_up_logging():
     ch.setFormatter(formatter)
 
     # add ch to logger
-    return logger.addHandler(ch)
+    logger.addHandler(ch)
+    
+    return logger
 
 log = _set_up_logging()
