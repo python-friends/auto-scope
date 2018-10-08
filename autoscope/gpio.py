@@ -6,10 +6,10 @@ import RPi.GPIO as GPIO
 """
 
 class GPIO:
-
-  BOARD = 1
-  OUT = 1
-  IN = 1
+  def __init__(self):
+    self.BOARD = 1
+    self.OUT = 1
+    self.IN = 1
 
   def setmode(self, a):
      print(a)
@@ -19,7 +19,5 @@ class GPIO:
      print(a)
   def cleanup(self):
      print('clean')
-  def setmode(self, a):
-     print(a)
   def setwarnings(self, flag):
      print(False)
