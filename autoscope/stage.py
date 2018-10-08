@@ -1,5 +1,7 @@
 import sys
 import time
+
+# TODO: try to import, except: import test module.
 import RPi.GPIO as GPIO
 
 class Stage:
