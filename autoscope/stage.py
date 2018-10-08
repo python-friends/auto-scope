@@ -1,11 +1,13 @@
 import sys
 import time
+from .utils import log
 
 try:
     # only works on RPi
     import RPi.GPIO as GPIO
 except ImportError:
     # import fake GPIO module
+    log.warning()
     from .gpio import GPIO
 
 class Stage:
