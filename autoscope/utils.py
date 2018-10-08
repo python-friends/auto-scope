@@ -1,6 +1,6 @@
 import logging
 
-def _set_up_logging():# create logger
+def _set_up_logging():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
 
