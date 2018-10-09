@@ -23,7 +23,7 @@ class Focus:
         self.step_z(nsteps=(-1 * abs(nsteps)))
 
     def goto(self, postion):
-        nsteps = postion - self.postion
+        nsteps = postion - self.zpos
         self.step_z(nsteps) 
         
     def home(self):
