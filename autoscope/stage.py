@@ -1,6 +1,5 @@
 import sys
 import time
-from .utils import log
 from .core import step
 
 class Stage:
@@ -19,10 +18,10 @@ class Stage:
         self.ypos = 0
 
     def step_x(self, nsteps):
-        self.xpos += step(nsteps)
+        self.xpos += step(self.xpins, nsteps)
 
     def step_y(self, nsteps):
-        self.ypos += step(nsteps)
+        self.ypos += step(self.ypins, nsteps)
 
     def right(self, nsteps):
         self.step_x(abs(nsteps))
@@ -30,10 +29,10 @@ class Stage:
     def left(self, nsteps):
         self.step_x(nsteps=(-1 * abs(nsteps)))
 
-    def forward(self, nsteps):
+    def backward(self, nsteps):
         self.step_y(nsteps=abs(nsteps))
         
-    def backward(self, nsteps):
+    def forward(self, nsteps):
         self.step_y(nsteps=(-1 * abs(nsteps)))
          
     def goto(self, x, y):
