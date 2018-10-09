@@ -1,1 +1,5 @@
-from .stage import Stage
+# application level
+from .autoscope import Autoscope
+
+# Uninitalised classses for lower level access
+from .stage import Stage  
