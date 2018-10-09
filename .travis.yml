@@ -3,6 +3,7 @@ language: python
 # command to run tests
 install:
   - pip install pipenv --upgrade
+  - pipenv run pip install pip==18.0 # fix for pip 18.1 error 
   - pipenv install --dev --skip-lock
 cache: pip
 jobs:
