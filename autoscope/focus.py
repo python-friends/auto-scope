@@ -1,6 +1,3 @@
-import sys
-import time
-from .utils import log
 from .core import step
 
 
