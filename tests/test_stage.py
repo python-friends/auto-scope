@@ -28,7 +28,7 @@ class TestStage():
 
     def test_home(self):
         self.stage.home()
-        assert self.stage.coordinates == (0, 0)
+        assert self.stage.xpos == 0 & self.stage.ypos == 0 
 
     def test_backward(self):
         self.stage.backward(10)
