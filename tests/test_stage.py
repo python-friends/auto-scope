@@ -14,11 +14,6 @@ class TestStage():
     def test_coordinates(self):
         assert self.stage.coordinates == (0, 0)
 
-    def test_step(self):
-        self.stage.step(self.stage.xpins, nsteps=1000, speed=1)
-        self.stage.step(self.stage.ypins, nsteps=1000, speed=1)
-        assert self.stage.xpos == 1000 & self.stage.ypos == 1000 
-
     def test_step_x(self):
         self.stage.step_x(nsteps=1000)
         assert self.stage.xpos == 1000 
@@ -35,12 +30,12 @@ class TestStage():
         self.stage.home()
         assert self.stage.coordinates == (0, 0)
 
-    def test_up(self):
-        self.stage.up(10)
+    def test_backward(self):
+        self.stage.backward(10)
         assert self.stage.ypos == 10
 
-    def test_down(self):
-        self.stage.down(20)
+    def test_forward(self):
+        self.stage.forward(20)
         assert self.stage.ypos == -20 
 
     def test_right(self):
