@@ -10,8 +10,8 @@ jobs:
   include:
     - stage: test
       script:
-        - pipenv run py.test -n 8 --boxed --junitxml=report.xml
+        - pipenv run pytest --cov=autoscope tests --cov-report=xml
       python: '3.6'
     - stage: coverage
       python: 3.6
-      script: pipenv run codecov
+      script: codecov
