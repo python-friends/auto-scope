@@ -4,12 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-auto-scope = {editable = true, path = "."}
 
 [dev-packages]
 pytest = "*"
 pytest-cov = "*"
 codecov = "*"
-
-[requires]
-python_version = "3.6"
+auto-scope = {editable = true, path = "."}
