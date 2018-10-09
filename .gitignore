@@ -3,3 +3,4 @@ auto_scope.egg-info
 coverage.xml
 .pytest_cache
 .ipynb_checkpoints
+autoscope/__pycache__
