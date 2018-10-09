@@ -13,4 +13,4 @@ jobs:
       python: '3.6'
     - stage: coverage
       python: 3.6
-      script: codecov
+      script: pipenv run codecov
