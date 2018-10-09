@@ -6,7 +6,7 @@ class TestStage():
         self.stage = Stage([1,2,3,4],[5,6,7,8])
 
     def test_xpins(self):
-         assert self.stage.xpins == [1,2,3,4]
+         assert self.stage.xpins == "fail" #[1,2,3,4]
 
     def test_ypins(self):
         assert self.stage.ypins == [5,6,7,8]
