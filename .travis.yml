@@ -10,7 +10,7 @@ jobs:
   include:
     - stage: test
       script:
-        - pipenv run pytest --cov=./
+        - pipenv run py.test --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov=autoscope tests
       python: '3.6'
     - stage: coverage
       python: 3.6
