@@ -16,64 +16,49 @@ class Stage:
         self.xpos = 0
         self.ypos = 0
 
-    #TODO change to step to neg/pos int for direction
-    def right(self, nsteps):
-        self.step(self.xpins, direction=-1, nsteps=nsteps)
-    def left(self, nsteps):
-        self.step(self.xpins, direction=1, nsteps=nsteps)
-    def up(self, nsteps):
-        self.step(self.ypins, direction=1, nsteps=nsteps)
-    def down(self, nsteps):
-        self.step(self.ypins, direction=-1, nsteps=nsteps)
-        
+    @property    
+    def coordinates(self):
+        return (self.xpos, self.ypos)
+
     def set_home(self):
         self.xpos = 0
         self.ypos = 0
     
-    @property    
-    def coordinates(self):
-        return (self.xpos, self.ypos)
-        
+    def right(self, nsteps):
+        self.step(self.xpins, nsteps=abs(nsteps))
+    def left(self, nsteps):
+        self.step(self.xpins, nsteps=(-1 * abs(nsteps)))
+    def up(self, nsteps):
+        self.step(self.ypins, nsteps=abs(nsteps))
+    def down(self, nsteps):
+        self.step(self.ypins, nsteps=(-1 * abs(nsteps)))
+         
+    def step_x(self, nsteps):
+            self.step(self.xpins, nsteps)
+
+    def step_y(self, nsteps):
+        self.step(self.ypins, nsteps)
+
     def goto(self, x, y):
         xsteps = x - self.xpos
-        # self.step(xsteps) 
-        if xsteps < 0:
-            self.right(abs(xsteps))
-        elif xsteps > 0:
-            self.left(xsteps)
-        
         ysteps = y - self.ypos
-        if ysteps < 0:
-            self.down(abs(ysteps))
-        elif ysteps > 0:
-            self.up(ysteps)
+        self.step_x(xsteps) 
+        self.step_y(ysteps) 
         
     def home(self):
-        # x
-        # self.goto(0,0)
-        if self.xpos < 0:
-            self.left(abs(self.xpos))
-        elif self.xpos > 0:
-            self.right(self.xpos)
-        # y
-        if self.ypos < 0:
-            self.up(abs(self.ypos))
-        elif self.ypos > 0:
-            self.down(self.ypos)
-        
-    def step(self, pins, direction=1, nsteps=1000, speed=1):
+        self.goto(0,0)
+    
+    def step(self, StepPins, nsteps, speed=1):
         # Use BCM GPIO references
         # instead of physical pin numbers
         GPIO.setmode(GPIO.BCM)
-        StepPins = pins
         # Set all pins as output
         for pin in StepPins:
           GPIO.setup(pin,GPIO.OUT)
           GPIO.output(pin, False)
 
-        # Define advanced sequence
-        # as shown in manufacturers datasheet
-        Seq = [[1,0,0,1],
+        # halfstep sequence
+        halfstep_seq = [[1,0,0,1],
                [1,0,0,0],
                [1,1,0,0],
                [0,1,0,0],
@@ -82,45 +67,39 @@ class Stage:
                [0,0,1,1],
                [0,0,0,1]]
 
-        StepCount = len(Seq)
-        StepDir = direction # Set to 1 or 2 for clockwise
-                    # Set to -1 or -2 for anti-clockwise
+        sequence_len = len(halfstep_seq)
 
-        # Read wait time from command line
-        wait = 1
-
-        if wait:
-          WaitTime = float(wait)/float(1000)
+        if nsteps < 0:
+            direction = -1
         else:
-          WaitTime = 10/float(1000)
+            direction = 1
 
-        # Initialise variables
+        WaitTime = float(speed)/float(1000)
+
         StepCounter = 0
-
-        # Start main loop
-        for _ in range (nsteps):
+        for _ in range(abs(nsteps)):
 
           for pin in range(0, 4):
             xpin = StepPins[pin]
-            if Seq[StepCounter][pin]!=0:
+            if halfstep_seq[StepCounter][pin] != 0:
               GPIO.output(xpin, True)
             else:
               GPIO.output(xpin, False)
 
-          StepCounter += StepDir
+          StepCounter += direction
 
           # If we reach the end of the sequence
           # start again
-          if (StepCounter>=StepCount):
+          if (StepCounter >= sequence_len):
             StepCounter = 0
-          if (StepCounter<0):
-            StepCounter = StepCount+StepDir
+          if (StepCounter < 0):
+            StepCounter = sequence_len + direction
 
           # Wait before moving on
           time.sleep(WaitTime)
         
-        if pins == self.xpins:
-            self.xpos += direction * nsteps
+        if StepPins == self.xpins:
+            self.xpos += nsteps
         else:
-            self.ypos += direction * nsteps
+            self.ypos += nsteps
         GPIO.cleanup()
