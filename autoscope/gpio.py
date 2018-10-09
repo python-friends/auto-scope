@@ -1,8 +1,5 @@
 """
 Fake GPIO module
-wget -N -P RPi/ https://gist.githubusercontent.com/python-friends/b51f4deb7d3e35ff516d1682460c3588/raw/GPIO.py
-touch RPi/__init__.py
-import RPi.GPIO as GPIO
 """
 
 class GPIO:
