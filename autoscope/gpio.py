@@ -10,6 +10,7 @@ class GPIO:
     self.BOARD = 1
     self.OUT = 1
     self.IN = 1
+    self.BCM = "BCM"
 
   def setmode(self, a):
      print(a)
