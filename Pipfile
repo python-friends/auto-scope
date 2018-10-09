@@ -7,6 +7,9 @@ name = "pypi"
 auto-scope = {editable = true, path = "."}
 
 [dev-packages]
+pytest = "*"
+pytest-cov = "*"
+codecov = "*"
 
 [requires]
 python_version = "3.6"
