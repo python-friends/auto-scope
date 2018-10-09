@@ -1,7 +1,7 @@
 sudo: false
 language: python
 # command to run tests
-script:
+install:
   - pip install pipenv --upgrade
   - pipenv install --dev --skip-lock
 cache: pip
