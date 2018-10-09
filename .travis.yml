@@ -9,8 +9,8 @@ cache: pip
 jobs:
   include:
     - stage: test
+      python: '3.6'
       script:
         - pipenv run pytest --cov=autoscope tests --cov-report=xml
-      python: '3.6'
       after_success:
         - codecov
