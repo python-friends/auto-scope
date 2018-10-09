@@ -12,6 +12,5 @@ jobs:
       script:
         - pipenv run pytest --cov=autoscope tests --cov-report=xml
       python: '3.6'
-    - stage: coverage
-      python: 3.6
-      script: codecov
+      after_success:
+        - codecov
