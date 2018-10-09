@@ -1,5 +1,3 @@
-import sys
-import time
 from .core import step
 
 class Stage:

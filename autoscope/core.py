@@ -15,14 +15,15 @@ def step(pins, nsteps, speed=1):
         GPIO.output(pin, False)
 
     # halfstep sequence
-    halfstep_seq = [[1,0,0,1],
-            [1,0,0,0],
-            [1,1,0,0],
-            [0,1,0,0],
-            [0,1,1,0],
-            [0,0,1,0],
-            [0,0,1,1],
-            [0,0,0,1]]
+    halfstep_seq = [
+        [1,0,0,1],
+        [1,0,0,0],
+        [1,1,0,0],
+        [0,1,0,0],
+        [0,1,1,0],
+        [0,0,1,0],
+        [0,0,1,1],
+        [0,0,0,1]]
 
     sequence_len = len(halfstep_seq)
 
