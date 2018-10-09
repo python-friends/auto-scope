@@ -1,4 +1,5 @@
 import time
+from .utils import log
 try:
     import RPi.GPIO as GPIO  # Only works on RPi
 except ImportError:
@@ -36,20 +37,20 @@ def step(pins, nsteps, speed=1):
     for _ in range(abs(nsteps)):
 
         for pin in range(0, 4):
-        xpin = pins[pin]
-        if halfstep_seq[StepCounter][pin] != 0:
-            GPIO.output(xpin, True)
-        else:
-            GPIO.output(xpin, False)
+            xpin = pins[pin]
+            if halfstep_seq[StepCounter][pin] != 0:
+                GPIO.output(xpin, True)
+            else:
+                GPIO.output(xpin, False)
 
         StepCounter += direction
 
         # If we reach the end of the sequence
         # start again
         if (StepCounter >= sequence_len):
-        StepCounter = 0
+            StepCounter = 0
         if (StepCounter < 0):
-        StepCounter = sequence_len + direction
+            StepCounter = sequence_len + direction
 
         # Wait before moving on
         time.sleep(WaitTime)
