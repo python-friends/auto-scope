@@ -7,6 +7,7 @@ try:
 except ImportError:
     log.warning("RPi.GPIO not found! Using GPIO test module.")
     from .gpio import GPIO
+    GPIO = GPIO()
 
 class Stage:
     def __init__(self, xpins, ypins):
