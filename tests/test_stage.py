@@ -27,8 +27,16 @@ class TestStage():
         assert self.stage.xpos == 42 & self.stage.ypos == 42 
 
     def test_home(self):
+        self.stage.xpos = 42 
+        self.stage.ypos = 42
         self.stage.home()
-        assert self.stage.xpos == 0 & self.stage.ypos == 0 
+        assert self.stage.xpos == 0 & self.stage.ypos == 0
+
+    def test_set_home(self):
+        self.stage.xpos = 42 
+        self.stage.ypos = 42
+        self.stage.set_home()
+        assert self.stage.xpos == 0 & self.stage.ypos == 0
 
     def test_backward(self):
         self.stage.backward(10)
