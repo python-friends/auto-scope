@@ -35,7 +35,7 @@ def step(pins, nsteps, speed=1):
     WaitTime = float(speed)/float(1000)
 
     StepCounter = 0
-    for _ in range(abs(nsteps)):
+    for _ in range(abs(nsteps) * 8): # ensure complete step
 
         for pin in range(0, 4):
             xpin = pins[pin]
