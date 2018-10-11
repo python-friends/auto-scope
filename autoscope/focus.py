@@ -11,7 +11,7 @@ class Focus:
         self.zpos = 0
 
     def step_z(self, nsteps):
-        self.zpos += step(self.zpins, nsteps)
+        self.zpos += step(self.zpins, nsteps,  speed=10)
     
     def up(self, nsteps):
         self.step_z(nsteps=abs(nsteps))
