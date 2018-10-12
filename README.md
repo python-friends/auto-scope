@@ -10,7 +10,7 @@ An open source whole slide scanner and automated cell discrimination and countin
 ![histological image](images/example_image.jpg)
 
 ## Raspberry Pi setup 
-There a few tricks to get autoscope running on a RPi. We are using [piwheels](https://www.piwheels.org/) to install a precompiled version of cv2. Unfortunately, this restricts us to using python 3.5 on the RPi. Running the precompiled version of RPi requires a few packages to work. Install the requirements with the apt-get commands below. Once they are installed you can run `pipenv install --dev --skip-lock` in project folder. 
+There a few tricks to get autoscope running on a RPi. We are using [piwheels](https://www.piwheels.org/) to install a precompiled version of cv2. Unfortunately, this restricts us to using python 3.5 on the RPi. Running the precompiled version of RPi requires a few packages to work. Install the requirements with the apt-get commands below. Once they are installed you can run `pipenv install --dev --skip-lock` in project the folder to install all the Pipfile packages. 
 
 ```{bash}
 sudo apt-get update 
