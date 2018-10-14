@@ -4,3 +4,4 @@ coverage.xml
 .pytest_cache
 .ipynb_checkpoints
 autoscope/__pycache__
+.DS_Store

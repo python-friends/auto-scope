@@ -10,6 +10,7 @@ name = "piwheels"
 
 [packages]
 opencv-contrib-python-headless = {version = "*", index = "piwheels", platform_machine= "== 'armv7l'"}
+opencv-contrib-python = {version = "*", index = "pypi", platform_machine= "!= 'armv7l'"}
 "RPi.GPIO" = {version = "*", platform_machine= "== 'armv7l'"}
 "picamera[array]" = {version = "*", index = "piwheels", platform_machine= "== 'armv7l'"}
 

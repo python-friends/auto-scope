@@ -4,11 +4,11 @@ try:
     import RPi.GPIO as GPIO  # Only works on RPi
     GPIO.setwarnings(False)
 except ImportError:
-    log.warning("RPi.GPIO not found! Using GPIO test module.")
-    from .gpio import GPIO
+    log.warning("RPi.GPIO not found! Using GPIO fake module.")
+    from .fakes.gpio import GPIO
     GPIO = GPIO()
 
-def step(pins, nsteps, speed=2):
+def step(pins, nsteps, speed=10):
     GPIO.setmode(GPIO.BCM)
     # Set all pins as output
     for pin in pins:
@@ -36,7 +36,7 @@ def step(pins, nsteps, speed=2):
     WaitTime = float(speed)/float(1000)
 
     StepCounter = 0
-    for _ in range(abs(nsteps) * sequence_len): # ensure complete step
+    for _ in range(int(abs(nsteps) * sequence_len)): # ensure complete step
         for pin in range(0, 4):
             xpin = pins[pin]
             if halfstep_seq[StepCounter][pin] != 0:
