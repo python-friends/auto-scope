@@ -2,12 +2,13 @@ import time
 from .utils import log
 try:
     import RPi.GPIO as GPIO  # Only works on RPi
+    GPIO.setwarnings(False)
 except ImportError:
     log.warning("RPi.GPIO not found! Using GPIO test module.")
     from .gpio import GPIO
     GPIO = GPIO()
 
-def step(pins, nsteps, speed=1):
+def step(pins, nsteps, speed=2):
     GPIO.setmode(GPIO.BCM)
     # Set all pins as output
     for pin in pins:
@@ -36,7 +37,6 @@ def step(pins, nsteps, speed=1):
 
     StepCounter = 0
     for _ in range(abs(nsteps) * sequence_len): # ensure complete step
-
         for pin in range(0, 4):
             xpin = pins[pin]
             if halfstep_seq[StepCounter][pin] != 0:
@@ -46,13 +46,14 @@ def step(pins, nsteps, speed=1):
 
         StepCounter += direction
 
+        
         # If we reach the end of the sequence
         # start again
         if (StepCounter >= sequence_len):
             StepCounter = 0
         if (StepCounter < 0):
             StepCounter = sequence_len + direction
-
+        
         # Wait before moving on
         time.sleep(WaitTime)
     
