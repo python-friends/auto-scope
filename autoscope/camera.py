@@ -43,6 +43,42 @@ class Camera:
         ypos = cY - side_length/2
         return (xpos/width, ypos/height, side_length/width, side_length/height)
     
+        
+    def square_side_length_from_bounding_circle(self, center_x, center_y, r, scaling_value=1):
+        side_length = int((r*2/sqrt(2)) * scaling_value)  # https://en.wikipedia.org/wiki/Special_right_triangle
+        return side_length
+    
+    def square_coords_from_bounding_circle(self, center_x, center_y, r, scaling_value=1):
+        side_lenght = self.square_side_length_from_bounding_circle(
+            center_x, center_y, r
+        ) 
+        delta = int(((side_lenght) / 2) * scaling_value)
+        x1 = center_x - delta
+        y1 = center_y - delta
+        x2 = center_x + delta
+        y2 = center_y + delta
+        return (x1, y1, x2, y2)
+
+    def auto_crop_image(self, BWimg, tol=0):
+        # img is image data
+        # tol  is tolerance
+        bool_mask = BWimg>tol
+        return BWimg[np.ix_(bool_mask.any(1),bool_mask.any(0))]
+
+    def find_circle(self, BWimg):
+        crop = self.auto_crop_image(BWimg)
+        r = int(max(crop.shape)/2)
+        # find center (in original image) https://www.learnopencv.com/find-center-of-blob-centroid-using-opencv-cpp-python/
+        M = cv2.moments(BWimg) # I'm not sure how well this work for crops. 
+        x = int(M["m10"] / M["m00"])
+        y = int(M["m01"] / M["m00"])
+        return (x, y, r)
+
+    def convert_BGR_BW(self, BGRimg, thresh=10):
+        GRAYimg = cv2.cvtColor(BGRimg, cv2.COLOR_BGR2GRAY)
+        BWimg = cv2.threshold(GRAYimg, thresh, 255, cv2.THRESH_BINARY)[1]
+        return BWimg
+
     def scan_down_generator(self, step_size, max_steps, scale=1):
         max_pos = self.focus.zpos - abs(max_steps)
         while self.focus.zpos > max_pos:
@@ -56,7 +92,7 @@ class Camera:
             self.focus.up(step_size)
             
             
-    def scan_blur(self, stepsize=10, maxsteps=200, thresh=100, direction=-1):
+    def scan(self, stepsize=10, maxsteps=200, thresh=100, direction=-1):
         zpos = []
         blur = []
         sweetspot = False
@@ -78,7 +114,7 @@ class Camera:
         print("Failed to focus")
         return False
 
-    def find_blur(self, stepsize=1, maxsteps=50, blur_target=100, direction=-1):
+    def find(self, stepsize=1, maxsteps=50, blur_target=100, direction=-1):
         zpos = []
         blur = []
         if direction == 1:
@@ -95,34 +131,6 @@ class Camera:
         print("Failed to focus")
         return False
 
-    def auto_focus(self, thresh=150, course_stepsize=10, course_maxsteps=400):
-        # uses the corse, fine, find algo.
-        # I think this should move to the autoscope class
-        corse_x1, corse_y1 = self.scan_blur(
-            maxsteps=course_maxsteps, 
-            stepsize=course_stepsize,
-            thresh=150,
-            direction=-1)
-        fine_x2, fine_y2 = self.scan_blur(
-            maxsteps=2*course_stepsize, 
-            stepsize=1,
-            thresh= sorted(corse_y1)[-2],
-            direction=1)
-        fine_x3, fine_y3 = self.scan_blur(
-            maxsteps=2*course_stepsize, 
-            stepsize=1,
-            thresh=sorted(fine_y2)[-2],
-            direction=-1)
-        found = self.find_blur(
-            maxsteps=1*course_stepsize, 
-            stepsize=1,
-            blur_target=min([max(fine_y2), max(fine_y3)]),
-            direction=1)
-        if found:
-            return True 
-        else:
-            return False
-    
     def variance_of_laplacian(self, img):
         return cv2.Laplacian(img, cv2.CV_64F).var()
 
@@ -139,38 +147,3 @@ class Camera:
                 if b > maxFocus:
                     maxFocus = b
         return maxFocus
-
-    def auto_crop_image(self, BWimg, tol=0):
-        # img is image data
-        # tol  is tolerance
-        bool_mask = BWimg>tol
-        return BWimg[np.ix_(bool_mask.any(1),bool_mask.any(0))]
-
-    def find_circle(self, BWimg):
-        crop = self.auto_crop_image(BWimg)
-        r = int(max(crop.shape)/2)
-        # find center (in original image) https://www.learnopencv.com/find-center-of-blob-centroid-using-opencv-cpp-python/
-        M = cv2.moments(BWimg) # I'm not sure how well this work for crops. 
-        x = int(M["m10"] / M["m00"])
-        y = int(M["m01"] / M["m00"])
-        return (x, y, r)
-    
-    def square_side_length_from_bounding_circle(self, center_x, center_y, r, scaling_value=1):
-        side_length = int((r*2/sqrt(2)) * scaling_value)  # https://en.wikipedia.org/wiki/Special_right_triangle
-        return side_length
-    
-    def square_coords_from_bounding_circle(self, center_x, center_y, r, scaling_value=1):
-        side_lenght = self.square_side_length_from_bounding_circle(
-            center_x, center_y, r
-        ) 
-        delta = int(((side_lenght) / 2) * scaling_value)
-        x1 = center_x - delta
-        y1 = center_y - delta
-        x2 = center_x + delta
-        y2 = center_y + delta
-        return (x1, y1, x2, y2)
-
-    def convert_BGR_BW(self, BGRimg, thresh=10):
-        GRAYimg = cv2.cvtColor(BGRimg, cv2.COLOR_BGR2GRAY)
-        BWimg = cv2.threshold(GRAYimg, thresh, 255, cv2.THRESH_BINARY)[1]
-        return BWimg
