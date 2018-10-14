@@ -25,9 +25,6 @@ function makeSlideMap() {
 
         console.log(dim);
 
-        // // set max zoom Level (might be `x` if gdal2tiles was called with `-z 0-x` option)
-        // map.setMaxZoom(rc.zoomLevel());
-
         // all coordinates need to be unprojected using the `unproject` method
         // set the view in the lower right edge of the image
         map.setView(rc.unproject([dim[0]/2, dim[1]/2]), 3);
@@ -40,16 +37,12 @@ function makeSlideMap() {
             .addTo(map);
 
           marker.on('click', function(){
-              marker.remove()
-          })
-          // marker.bindPopup('[' + Math.floor(coords.x) + ',' + Math.floor(coords.y) + ']')
-          //   .openPopup()
-        });
 
-        // var bounds = new L.LatLngBounds(test1, test2);
-        //
-        // var southWest = new L.LatLng(-252, 4);
-        // var northEast = new L.LatLng(-5, 254);
+              marker.bindPopup('[' + Math.floor(coords.x) + ',' + Math.floor(coords.y) + ']')
+                .openPopup()
+              // marker.remove()
+          })
+        });
 
         var southWest = rc.unproject([dim[0], 0]);
         var northEast = rc.unproject([0, dim[1]]);
@@ -63,7 +56,7 @@ function makeSlideMap() {
         map.setMaxBounds(bounds);
 
         // the tile layer containing the image generated with `gdal2tiles --leaflet -p raster -w none <img> tiles`
-        L.tileLayer('/static/js/tiles/{z}/{x}/{y}.png', {
+        L.tileLayer('/static/assets/tiles/{z}/{x}/{y}.png', {
             minZoom: minZoom,
             maxZoom: maxZoom,
             noWrap: true
@@ -72,7 +65,7 @@ function makeSlideMap() {
     };
 
     // Pour in the image:
-    img.src = '/static/js/Image_4923.jpg';
+    img.src = '/static/assets/Image_4923.jpg';
 
 
 }
