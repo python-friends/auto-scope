@@ -7,11 +7,15 @@ class TestAutoscope():
 
     def test_stage_attr(self):
         if not hasattr(self.scope, "stage"):
-            pytest.fail("Auto scope does not have attribute 'stage'")
+            pytest.fail("Autoscope does not have attribute 'stage'")
 
     def test_focus_attr(self):
         if not hasattr(self.scope, "focus"):
-            pytest.fail("Auto scope does not have attribute 'focus'")
+            pytest.fail("Autoscope does not have attribute 'focus'")
 
+    def test_focus_attr(self):
+        if not hasattr(self.scope, "camera"):
+            pytest.fail("Autoscope does not have attribute 'camera'")
+        
     def test_coordinates(self):
         assert self.scope.coordinates == (0,0,0)
