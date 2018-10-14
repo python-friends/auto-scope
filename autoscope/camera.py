@@ -1,5 +1,12 @@
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+
+from .utils import log
+try:
+    from picamera import PiCamera
+    from picamera.array import PiRGBArray
+except ImportError:
+    log.warning("picamera not found! Using picamera fake module.")
+    from .fakes.picamera import PiRGBArray, PiCamera
+
 import time
 import cv2
 import numpy as np

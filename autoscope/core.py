@@ -4,8 +4,8 @@ try:
     import RPi.GPIO as GPIO  # Only works on RPi
     GPIO.setwarnings(False)
 except ImportError:
-    log.warning("RPi.GPIO not found! Using GPIO test module.")
-    from .gpio import GPIO
+    log.warning("RPi.GPIO not found! Using GPIO fake module.")
+    from .fakes.gpio import GPIO
     GPIO = GPIO()
 
 def step(pins, nsteps, speed=10):
