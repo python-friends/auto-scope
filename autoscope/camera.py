@@ -73,7 +73,7 @@ class Camera:
         y = int(M["m01"] / M["m00"])
         return (x, y, r)
 
-    def convert_BGR_BW(self, BGRimg, thresh=10):
+    def convert_BGR_BW(self, BGRimg, thresh=20):
         GRAYimg = cv2.cvtColor(BGRimg, cv2.COLOR_BGR2GRAY)
         BWimg = cv2.threshold(GRAYimg, thresh, 255, cv2.THRESH_BINARY)[1]
         return BWimg
