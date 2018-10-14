@@ -52,9 +52,9 @@ class TestCamera():
         
         
     def rateFocusByLaplacianGrid(self):
-        assert self.camera.variance_of_laplacian(
+        assert self.camera.rateFocusByLaplacianGrid(
             self.test_BGR_tile
-        ) == 277.88635379592876
+        ) == 277
         
     
     
