@@ -29,12 +29,11 @@ class Camera:
 
     def get_tile(self, resolution=(640, 640), scale=1):
         if self.zoom == None:
-            self.zoom = self.calulate_zoom()
+            self.zoom = self.calulate_zoom(self.take_photo())
         img = self.take_photo(resolution=resolution, zoom=self.zoom, scale=scale)
         return img
         
-    def calulate_zoom(self, scaling_value=0.75):
-        BGRimg = self.take_photo()
+    def calulate_zoom(self, BGRimg, scaling_value=0.75):
         BWimg = self.convert_BGR_BW(BGRimg)
         height,width = BWimg.shape
         cX, cY, r = self.find_circle(BWimg)
