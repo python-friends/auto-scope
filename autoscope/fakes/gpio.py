@@ -1,6 +1,7 @@
 """
 Fake GPIO module
 """
+from ..utils import log
 
 class GPIO:
   def __init__(self):
@@ -10,12 +11,12 @@ class GPIO:
     self.BCM = "BCM"
 
   def setmode(self, a):
-     print(a)
+    log.info(a)
   def setup(self, a, b):
-     print(a)
+    log.info(a)
   def output(self, a, b):
-     print(a)
+    log.info(a)
   def cleanup(self):
-     print('clean')
+    log.info('clean')
   def setwarnings(self, flag):
-     print(False)
+    log.info(False)
