@@ -146,3 +146,6 @@ class Camera:
                 if b > maxFocus:
                     maxFocus = b
         return maxFocus
+
+    def save(self, filename, image):
+        cv2.imwrite(filename, image)
