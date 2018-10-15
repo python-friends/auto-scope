@@ -39,3 +39,23 @@ class Autoscope:
             return True 
         else:
             return False
+    
+    def auto_scan(self, filename, xsteps=50, ysteps=60, xsquares=3, ysquares=3, right=True, forward=True):
+        for y in range(ysquares):
+            for x in range(xsquares):
+                if x+1 == xsquares:
+                    break
+                image = self.camera.get_tile(scale=1)
+                self.camera.save('scans/{}_{}.png'.format(filename, i), image)
+                if right:
+                    scope.stage.right(x)
+                else:
+                    scope.stage.left(x)
+            if forward:
+                scope.stage.forward(y)
+            else:
+                scope.stage.backward(y)
+            right = not right
+            
+            
+    

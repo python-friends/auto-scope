@@ -2,11 +2,11 @@ import logging
 
 def _set_up_logging():
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.WARNING)
 
     # create console handler and set level to debug
     ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
+    ch.setLevel(logging.WARNING)
 
     # create formatter
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')

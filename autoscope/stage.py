@@ -15,29 +15,29 @@ class Stage:
         self.xpos = 0
         self.ypos = 0
 
-    def step_x(self, nsteps):
-        self.xpos += step(self.xpins, nsteps)
+    def step_x(self, nsteps, speed=10):
+        self.xpos += step(self.xpins, nsteps, speed=speed)
 
-    def step_y(self, nsteps):
-        self.ypos += step(self.ypins, nsteps)
+    def step_y(self, nsteps, speed=10):
+        self.ypos += step(self.ypins, nsteps, speed=speed)
 
-    def right(self, nsteps):
-        self.step_x(abs(nsteps))
+    def right(self, nsteps, speed=10):
+        self.step_x(abs(nsteps), speed=speed)
 
-    def left(self, nsteps):
-        self.step_x(nsteps=(-1 * abs(nsteps)))
+    def left(self, nsteps, speed=10):
+        self.step_x(nsteps=(-1 * abs(nsteps)), speed=speed)
 
-    def backward(self, nsteps):
-        self.step_y(nsteps=abs(nsteps))
+    def backward(self, nsteps, speed=10):
+        self.step_y(nsteps=abs(nsteps), speed=speed)
         
-    def forward(self, nsteps):
-        self.step_y(nsteps=(-1 * abs(nsteps)))
+    def forward(self, nsteps, speed=10):
+        self.step_y(nsteps=(-1 * abs(nsteps)), speed=speed)
          
-    def goto(self, x, y):
+    def goto(self, x, y, speed=10):
         xsteps = x - self.xpos
         ysteps = y - self.ypos
-        self.step_x(xsteps) 
-        self.step_y(ysteps) 
+        self.step_x(xsteps, speed=speed) 
+        self.step_y(ysteps, speed=speed) 
         
-    def home(self):
-        self.goto(0,0)
+    def home(self, speed=2):
+        self.goto(0,0, speed=speed)
