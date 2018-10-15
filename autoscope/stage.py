@@ -40,4 +40,4 @@ class Stage:
         self.step_y(ysteps, speed=speed) 
         
     def home(self, speed=2):
-        self.goto(0,0, speed=speed
+        self.goto(0,0, speed=speed)
