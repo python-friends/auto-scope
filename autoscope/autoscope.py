@@ -18,7 +18,7 @@ class Autoscope:
         corse_x1, corse_y1 = self.camera.scan(
             maxsteps=course_maxsteps, 
             stepsize=course_stepsize,
-            thresh=150,
+            thresh=thresh,
             direction=-1)
         fine_x2, fine_y2 = self.camera.scan(
             maxsteps=2*course_stepsize, 
