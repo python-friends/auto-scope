@@ -1,6 +1,7 @@
 from .stage import Stage
 from .focus import Focus
 from .camera import Camera
+import os 
 
 class Autoscope:
 
@@ -40,22 +41,32 @@ class Autoscope:
         else:
             return False
     
-    def auto_scan(self, filename, xsteps=50, ysteps=60, xsquares=3, ysquares=3, right=True, forward=True):
+    
+    def auto_scan(self, name, xsteps=50, ysteps=60, xsquares=3, ysquares=3, right=True, forward=True, scale=1, speed=2):
+        start_x, start_y, _ = self.coordinates
+        if not os.path.isdir('scans'): 
+            os.makedirs('scans')
+        # check for existing files?
+        i = 0
         for y in range(ysquares):
             for x in range(xsquares):
+                image = self.camera.get_tile(scale=scale)
+                i += 1
+                self.camera.save('scans/{}_{}.png'.format(name, i), image)
                 if x+1 == xsquares:
                     break
-                image = self.camera.get_tile(scale=1)
-                self.camera.save('scans/{}_{}.png'.format(filename, i), image)
                 if right:
-                    scope.stage.right(x)
+                    self.stage.right(xsteps, speed=speed)
                 else:
-                    scope.stage.left(x)
+                    self.stage.left(xsteps, speed=speed)
             if forward:
-                scope.stage.forward(y)
+                self.stage.forward(ysteps, speed=speed)
             else:
-                scope.stage.backward(y)
+                self.stage.backward(ysteps, speed=speed)
             right = not right
-            
+        # clean up
+        # zip files and remove?
+        # save metadata?
+        self.stage.goto(start_x, start_y, speed=1)
             
     
