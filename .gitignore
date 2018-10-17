@@ -6,3 +6,4 @@ coverage.xml
 autoscope/__pycache__
 .DS_Store
 .vscode
+scans/
