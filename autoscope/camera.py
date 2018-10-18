@@ -1,4 +1,3 @@
-
 from .utils import log
 try:
     from picamera import PiCamera
@@ -29,7 +28,7 @@ class Camera:
 
     def get_tile(self, resolution=(640, 640), scale=1):
         if self.zoom == None:
-            self.zoom = self.reset_zoom()
+            self.zoom = self.calulate_zoom(self.take_photo())
         img = self.take_photo(resolution=resolution, zoom=self.zoom, scale=scale)
         return img
         
@@ -42,8 +41,6 @@ class Camera:
         ypos = cY - side_length/2
         return (xpos/width, ypos/height, side_length/width, side_length/height)
     
-    def reset_zoom(self):
-        self.zoom = self.calulate_zoom(self.take_photo())
         
     def square_side_length_from_bounding_circle(self, center_x, center_y, r, scaling_value=1):
         side_length = int((r*2/sqrt(2)) * scaling_value)  # https://en.wikipedia.org/wiki/Special_right_triangle
