@@ -1,5 +1,6 @@
 from .core import step
 
+
 class Stage:
     def __init__(self, xpins, ypins):
         self.xpins = xpins
@@ -7,7 +8,7 @@ class Stage:
         self.xpos = 0
         self.ypos = 0
 
-    @property    
+    @property
     def coordinates(self):
         return (self.xpos, self.ypos)
 
@@ -29,15 +30,15 @@ class Stage:
 
     def backward(self, nsteps, speed=10):
         self.step_y(nsteps=abs(nsteps), speed=speed)
-        
+
     def forward(self, nsteps, speed=10):
         self.step_y(nsteps=(-1 * abs(nsteps)), speed=speed)
-         
+
     def goto(self, x, y, speed=10):
         xsteps = x - self.xpos
         ysteps = y - self.ypos
-        self.step_x(xsteps, speed=speed) 
-        self.step_y(ysteps, speed=speed) 
-        
+        self.step_x(xsteps, speed=speed)
+        self.step_y(ysteps, speed=speed)
+
     def home(self, speed=2):
-        self.goto(0,0, speed=speed)
+        self.goto(0, 0, speed=speed)

@@ -1,4 +1,5 @@
 from .utils import log
+
 try:
     from picamera import PiCamera
     from picamera.array import PiRGBArray
@@ -11,18 +12,19 @@ import cv2
 import numpy as np
 from math import sqrt
 
+
 class Camera:
     def __init__(self, focus):
         self.zoom = None
         self.focus = focus
 
-    def take_photo(self, resolution=(640, 640), zoom=(0,0,1,1), scale=1):
-        resolution = (resolution[0]*scale, resolution[1]*scale)
+    def take_photo(self, resolution=(640, 640), zoom=(0, 0, 1, 1), scale=1):
+        resolution = (resolution[0] * scale, resolution[1] * scale)
         with PiCamera() as camera:
             camera.resolution = resolution
             camera.zoom = zoom
             with PiRGBArray(camera) as stream:
-                camera.capture(stream, format='bgr')
+                camera.capture(stream, format="bgr")
                 # At this point the image is available as stream.array
                 return stream.array
 
@@ -31,25 +33,32 @@ class Camera:
             self.zoom = self.calulate_zoom(self.take_photo())
         img = self.take_photo(resolution=resolution, zoom=self.zoom, scale=scale)
         return img
-        
+
     def calulate_zoom(self, BGRimg, scaling_value=0.75):
         BWimg = self.convert_BGR_BW(BGRimg)
-        height,width = BWimg.shape
+        height, width = BWimg.shape
         cX, cY, r = self.find_circle(BWimg)
-        side_length = self.square_side_length_from_bounding_circle(cX, cY, r, scaling_value=scaling_value)
-        xpos = cX - side_length/2
-        ypos = cY - side_length/2
-        return (xpos/width, ypos/height, side_length/width, side_length/height)
-    
-        
-    def square_side_length_from_bounding_circle(self, center_x, center_y, r, scaling_value=1):
-        side_length = int((r*2/sqrt(2)) * scaling_value)  # https://en.wikipedia.org/wiki/Special_right_triangle
+        side_length = self.square_side_length_from_bounding_circle(
+            cX, cY, r, scaling_value=scaling_value
+        )
+        xpos = cX - side_length / 2
+        ypos = cY - side_length / 2
+        return (xpos / width, ypos / height, side_length / width, side_length / height)
+
+    def square_side_length_from_bounding_circle(
+        self, center_x, center_y, r, scaling_value=1
+    ):
+        side_length = int(
+            (r * 2 / sqrt(2)) * scaling_value
+        )  # https://en.wikipedia.org/wiki/Special_right_triangle
         return side_length
-    
-    def square_coords_from_bounding_circle(self, center_x, center_y, r, scaling_value=1):
+
+    def square_coords_from_bounding_circle(
+        self, center_x, center_y, r, scaling_value=1
+    ):
         side_lenght = self.square_side_length_from_bounding_circle(
             center_x, center_y, r
-        ) 
+        )
         delta = int(((side_lenght) / 2) * scaling_value)
         x1 = center_x - delta
         y1 = center_y - delta
@@ -60,14 +69,14 @@ class Camera:
     def auto_crop_image(self, BWimg, tol=0):
         # img is image data
         # tol  is tolerance
-        bool_mask = BWimg>tol
-        return BWimg[np.ix_(bool_mask.any(1),bool_mask.any(0))]
+        bool_mask = BWimg > tol
+        return BWimg[np.ix_(bool_mask.any(1), bool_mask.any(0))]
 
     def find_circle(self, BWimg):
         crop = self.auto_crop_image(BWimg)
-        r = int(max(crop.shape)/2)
+        r = int(max(crop.shape) / 2)
         # find center (in original image) https://www.learnopencv.com/find-center-of-blob-centroid-using-opencv-cpp-python/
-        M = cv2.moments(BWimg) # I'm not sure how well this work for crops. 
+        M = cv2.moments(BWimg)  # I'm not sure how well this work for crops.
         x = int(M["m10"] / M["m00"])
         y = int(M["m01"] / M["m00"])
         return (x, y, r)
@@ -82,14 +91,13 @@ class Camera:
         while self.focus.zpos > max_pos:
             yield self.get_tile(scale=scale)
             self.focus.down(step_size)
-    
+
     def scan_up_generator(self, step_size, max_steps, scale=1):
         max_pos = self.focus.zpos + abs(max_steps)
         while self.focus.zpos < max_pos:
             yield self.get_tile(scale=scale)
             self.focus.up(step_size)
-            
-            
+
     def scan(self, stepsize=10, maxsteps=200, thresh=100, direction=-1):
         zpos = []
         blur = []
@@ -134,13 +142,13 @@ class Camera:
 
     def rateFocusByLaplacianGrid(self, img, squares=4):
         squares = int(sqrt(squares))
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         maxFocus = 0
         h = int(img.shape[0] / squares)
         w = int(img.shape[1] / squares)
         for i in range(squares):
             for j in range(squares):
-                roi_gray = img[i*h:i*h+h, j*w:j*w+w]
+                roi_gray = img[i * h : i * h + h, j * w : j * w + w]
                 b = self.variance_of_laplacian(roi_gray)
                 if b > maxFocus:
                     maxFocus = b

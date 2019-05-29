@@ -21,4 +21,3 @@ pytest = "*"
 pytest-cov = "*"
 codecov = "*"
 auto-scope = {editable = true,path = "."}
-black = "*"
