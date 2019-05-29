@@ -24,7 +24,7 @@ def step(pins, nsteps, speed=10):
         [0,1,1,0],
         [0,0,1,0],
         [0,0,1,1],
-        [0,0,0,1]
+        [0,0,0,1],
     ]
 
     sequence_len = len(halfstep_seq)
