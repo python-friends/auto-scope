@@ -7,6 +7,8 @@ auto-scope
 
 An open source whole slide scanner and automated cell discrimination and counting system. Check out the [blog](https://python-friends.github.io/)!
 
+The 3D files are available via thingiverse (https://www.thingiverse.com/thing:3182595).
+
 ![histological image](images/example_image.jpg)
 
 ## Raspberry Pi setup 
