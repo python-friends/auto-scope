@@ -29,3 +29,6 @@ sudo apt install libavcodec-dev
 sudo apt install libavformat-dev
 sudo apt install libswscale-dev
 ```
+
+## Research poster
+![poster](images/Auto-scope-poster72dpi.jpg)
